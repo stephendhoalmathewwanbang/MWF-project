@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MWF New Sale</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/mwf.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">MWF Sales</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="sales-dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="new-sale.html">New Sale</a></li>
+          <li class="nav-item"><a class="nav-link" href="today-sales.html">Today's Sales</a></li>
+          <li class="nav-item"><a class="nav-link" href="customers.html">Customers</a></li>
+          <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h2 class="mb-4">New Sale</h2>
+    
+    <form id="saleForm">
+      <div class="row g-4">
+        <!-- Product Selection -->
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Product Details</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="productType" class="form-label">Product Type</label>
+                  <select class="form-select" id="productType" onchange="updateProducts()" required>
+                    <option value="">Select Type</option>
+                    <option value="wood">Wood</option>
+                    <option value="furniture">Furniture</option>
+                    <option value="poles">Poles</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="productName" class="form-label">Product Name</label>
+                  <select class="form-select" id="productName" onchange="updatePricing()" required>
+                    <option value="">Select Product</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="quantity" class="form-label">Quantity</label>
+                  <input type="number" class="form-control" id="quantity" min="1" onchange="calculateTotal()" required>
+                </div>
+                <div class="col-md-4">
+                  <label for="unitPrice" class="form-label">Unit Price</label>
+                  <input type="number" class="form-control" id="unitPrice" readonly>
+                </div>
+                <div class="col-md-4">
+                  <label for="subtotal" class="form-label">Subtotal</label>
+                  <input type="number" class="form-control" id="subtotal" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer & Payment -->
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Customer & Payment</h5>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <label for="customerName" class="form-label">Customer Name</label>
+                <input type="text" class="form-control" id="customerName" required>
+              </div>
+              <div class="mb-3">
+                <label for="customerPhone" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="customerPhone">
+              </div>
+              <div class="mb-3">
+                <label for="paymentType" class="form-label">Payment Type</label>
+                <select class="form-select" id="paymentType" required>
+                  <option value="">Select Payment</option>
+                  <option value="cash">Cash</option>
+                  <option value="cheque">Cheque</option>
+                  <option value="bank">Bank Transfer</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="transport" onchange="calculateTotal()">
+                  <label class="form-check-label" for="transport">
+                    Add Transport (5%)
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total & Actions -->
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-6">
+                  <h4>Total Amount: <span id="totalAmount" class="text-success">UGX 0.00</span></h4>
+                </div>
+                <div class="col-md-6 text-end">
+                  <button type="button" class="btn btn-secondary me-2" onclick="resetForm()">Reset</button>
+                  <button type="submit" class="btn btn-success btn-lg">Complete Sale</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Receipt Modal -->
+  <div class="modal fade" id="receiptModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Sale Receipt</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="receiptContent">
+          <!-- Receipt content will be generated here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="printReceipt()">Print Receipt</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Product database
+    const products = {
+      wood: [
+        { name: 'Timber', price: 250 },
+        { name: 'Pine Wood', price: 180 },
+        { name: 'Oak Wood', price: 320 }
+      ],
+      furniture: [
+        { name: 'Sofa Set', price: 1200 },
+        { name: 'Dining Table', price: 800 },
+        { name: 'Bed Frame', price: 600 }
+      ],
+      poles: [
+        { name: 'Wood Poles', price: 95 },
+        { name: 'Metal Poles', price: 150 }
+      ]
+    };
+
+    function updateProducts() {
+      const type = document.getElementById('productType').value;
+      const productSelect = document.getElementById('productName');
+      productSelect.innerHTML = '<option value="">Select Product</option>';
+      
+      if (type && products[type]) {
+        products[type].forEach(product => {
+          const option = document.createElement('option');
+          option.value = product.name;
+          option.textContent = product.name;
+          option.dataset.price = product.price;
+          productSelect.appendChild(option);
+        });
+      }
+    }
+
+    function updatePricing() {
+      const productSelect = document.getElementById('productName');
+      const selectedOption = productSelect.options[productSelect.selectedIndex];
+      
+      if (selectedOption && selectedOption.dataset.price) {
+        document.getElementById('unitPrice').value = selectedOption.dataset.price;
+        calculateTotal();
+      }
+    }
+
+    function calculateTotal() {
+      const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+      const unitPrice = parseFloat(document.getElementById('unitPrice').value) || 0;
+      const subtotal = quantity * unitPrice;
+      
+      document.getElementById('subtotal').value = subtotal.toFixed(2);
+      
+      const transport = document.getElementById('transport').checked;
+      const transportFee = transport ? subtotal * 0.05 : 0;
+      const total = subtotal + transportFee;
+      
+      document.getElementById('totalAmount').textContent = `UGX ${total.toFixed(2)}`;
+    }
+
+    function resetForm() {
+      document.getElementById('saleForm').reset();
+      document.getElementById('totalAmount').textContent = 'UGX 0.00';
+    }
+
+    function generateReceipt() {
+      const customerName = document.getElementById('customerName').value;
+      const customerPhone = document.getElementById('customerPhone').value;
+      const productName = document.getElementById('productName').value;
+      const quantity = document.getElementById('quantity').value;
+      const unitPrice = document.getElementById('unitPrice').value;
+      const subtotal = document.getElementById('subtotal').value;
+      const transport = document.getElementById('transport').checked;
+      const total = document.getElementById('totalAmount').textContent;
+      const paymentType = document.getElementById('paymentType').value;
+      
+      const receiptContent = `
+        <div class="text-center mb-4">
+          <h4>MWF Wood & Furniture</h4>
+          <p class="text-muted">Receipt</p>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">
+            <strong>Customer:</strong> ${customerName}<br>
+            <strong>Phone:</strong> ${customerPhone}<br>
+            <strong>Date:</strong> ${new Date().toLocaleDateString()}
+          </div>
+          <div class="col-6 text-end">
+            <strong>Receipt #:</strong> ${Math.floor(Math.random() * 10000)}<br>
+            <strong>Payment:</strong> ${paymentType}
+          </div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>${productName}</td>
+              <td>${quantity}</td>
+                              <td>UGX ${unitPrice}</td>
+                <td>UGX ${subtotal}</td>
+            </tr>
+                          ${transport ? '<tr><td colspan="3">Transport (5%)</td><td>UGX ' + (parseFloat(subtotal) * 0.05).toFixed(2) + '</td></tr>' : ''}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="3">Total</th>
+                              <th>UGX ${total}</th>
+            </tr>
+          </tfoot>
+        </table>
+      `;
+      
+      document.getElementById('receiptContent').innerHTML = receiptContent;
+    }
+
+    function printReceipt() {
+      window.print();
+    }
+
+    document.getElementById('saleForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      generateReceipt();
+      new bootstrap.Modal(document.getElementById('receiptModal')).show();
+    });
+  </script>
+</body>
+</html> 

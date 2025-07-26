@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MWF Today's Sales</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/mwf.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">MWF Sales</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="sales-dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="new-sale.html">New Sale</a></li>
+          <li class="nav-item"><a class="nav-link active" href="today-sales.html">Today's Sales</a></li>
+          <li class="nav-item"><a class="nav-link" href="customers.html">Customers</a></li>
+          <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Today's Sales</h2>
+      <div>
+        <button class="btn btn-success me-2" onclick="exportSales()">Export</button>
+        <button class="btn btn-primary" onclick="printSales()">Print</button>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-3">
+        <div class="card text-white bg-success">
+          <div class="card-body">
+            <h5 class="card-title">Total Sales</h5>
+                            <p class="card-text display-6">UGX 32,300,000</p>
+            <small>5 transactions</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-white bg-info">
+          <div class="card-body">
+            <h5 class="card-title">Average Sale</h5>
+                            <p class="card-text display-6">UGX 6,460,000</p>
+            <small>Per transaction</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-white bg-warning">
+          <div class="card-body">
+            <h5 class="card-title">Customers</h5>
+            <p class="card-text display-6">15</p>
+            <small>Served today</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-white bg-primary">
+          <div class="card-body">
+            <h5 class="card-title">Items Sold</h5>
+            <p class="card-text display-6">25</p>
+            <small>Total units</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label for="filterProduct" class="form-label">Product</label>
+            <select class="form-select" id="filterProduct">
+              <option value="">All Products</option>
+              <option value="Timber">Timber</option>
+              <option value="Furniture">Furniture</option>
+              <option value="Poles">Poles</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="filterPayment" class="form-label">Payment Type</label>
+            <select class="form-select" id="filterPayment">
+              <option value="">All Payments</option>
+              <option value="cash">Cash</option>
+              <option value="cheque">Cheque</option>
+              <option value="bank">Bank Transfer</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="filterCustomer" class="form-label">Customer</label>
+            <input type="text" class="form-control" id="filterCustomer" placeholder="Search customer">
+          </div>
+          <div class="col-md-3 d-flex align-items-end">
+            <button class="btn btn-primary w-100" onclick="filterSales()">Filter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sales Table -->
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">Sales Details</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>Time</th>
+                <th>Receipt #</th>
+                <th>Customer</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Subtotal</th>
+                <th>Transport</th>
+                <th>Total</th>
+                <th>Payment</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>10:30 AM</td>
+                <td>#1001</td>
+                <td>John Doe</td>
+                <td>Timber</td>
+                <td>10</td>
+                                  <td>UGX 950,000</td>
+                  <td>UGX 9,500,000</td>
+                  <td>Yes</td>
+                  <td>UGX 9,975,000</td>
+                <td><span class="badge bg-success">Cash</span></td>
+                <td>
+                  <button class="btn btn-sm btn-primary" onclick="viewReceipt('1001')">View</button>
+                  <button class="btn btn-sm btn-secondary" onclick="printReceipt('1001')">Print</button>
+                </td>
+              </tr>
+              <tr>
+                <td>09:15 AM</td>
+                <td>#1002</td>
+                <td>Jane Smith</td>
+                <td>Furniture Set</td>
+                <td>1</td>
+                                  <td>UGX 6,840,000</td>
+                  <td>UGX 6,840,000</td>
+                  <td>No</td>
+                  <td>UGX 6,840,000</td>
+                <td><span class="badge bg-info">Cheque</span></td>
+                <td>
+                  <button class="btn btn-sm btn-primary" onclick="viewReceipt('1002')">View</button>
+                  <button class="btn btn-sm btn-secondary" onclick="printReceipt('1002')">Print</button>
+                </td>
+              </tr>
+              <tr>
+                <td>08:45 AM</td>
+                <td>#1003</td>
+                <td>Mike Johnson</td>
+                <td>Wood Poles</td>
+                <td>10</td>
+                                  <td>UGX 361,000</td>
+                  <td>UGX 3,610,000</td>
+                  <td>Yes</td>
+                  <td>UGX 3,790,500</td>
+                <td><span class="badge bg-primary">Bank</span></td>
+                <td>
+                  <button class="btn btn-sm btn-primary" onclick="viewReceipt('1003')">View</button>
+                  <button class="btn btn-sm btn-secondary" onclick="printReceipt('1003')">Print</button>
+                </td>
+              </tr>
+              <tr>
+                <td>08:30 AM</td>
+                <td>#1004</td>
+                <td>Sarah Wilson</td>
+                <td>Dining Table</td>
+                <td>1</td>
+                                  <td>UGX 3,040,000</td>
+                  <td>UGX 3,040,000</td>
+                  <td>No</td>
+                  <td>UGX 3,040,000</td>
+                <td><span class="badge bg-success">Cash</span></td>
+                <td>
+                  <button class="btn btn-sm btn-primary" onclick="viewReceipt('1004')">View</button>
+                  <button class="btn btn-sm btn-secondary" onclick="printReceipt('1004')">Print</button>
+                </td>
+              </tr>
+              <tr>
+                <td>08:00 AM</td>
+                <td>#1005</td>
+                <td>David Brown</td>
+                <td>Pine Wood</td>
+                <td>5</td>
+                                  <td>UGX 684,000</td>
+                  <td>UGX 3,420,000</td>
+                  <td>Yes</td>
+                  <td>UGX 3,591,000</td>
+                <td><span class="badge bg-info">Cheque</span></td>
+                <td>
+                  <button class="btn btn-sm btn-primary" onclick="viewReceipt('1005')">View</button>
+                  <button class="btn btn-sm btn-secondary" onclick="printReceipt('1005')">Print</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function filterSales() {
+      // Filter functionality would be implemented here
+      alert('Filter applied!');
+    }
+
+    function exportSales() {
+      // Export functionality would be implemented here
+      alert('Sales data exported!');
+    }
+
+    function printSales() {
+      window.print();
+    }
+
+    function viewReceipt(receiptId) {
+      alert(`Viewing receipt #${receiptId}`);
+    }
+
+    function printReceipt(receiptId) {
+      alert(`Printing receipt #${receiptId}`);
+    }
+  </script>
+</body>
+</html> 

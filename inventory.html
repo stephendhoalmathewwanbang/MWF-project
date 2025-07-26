@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MWF Inventory Management</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/mwf.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-warning">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">MWF Warehouse</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="warehouse-dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="inventory.html">Current Inventory</a></li>
+          <li class="nav-item"><a class="nav-link" href="delivery-logs.html">Delivery Logs</a></li>
+          <li class="nav-item"><a class="nav-link" href="stock-update.html">Update Stock</a></li>
+          <li class="nav-item"><a class="nav-link" href="suppliers.html">Suppliers</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Current Inventory</h2>
+      <div>
+        <button class="btn btn-success me-2" onclick="exportInventory()">Export</button>
+        <button class="btn btn-primary" onclick="printInventory()">Print</button>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-3">
+        <div class="card text-white bg-info">
+          <div class="card-body">
+            <h5 class="card-title">Total Items</h5>
+            <p class="card-text display-6">1,250</p>
+            <small>In stock</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-white bg-warning">
+          <div class="card-body">
+            <h5 class="card-title">Low Stock</h5>
+            <p class="card-text display-6">8</p>
+            <small>Need restocking</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-white bg-danger">
+          <div class="card-body">
+            <h5 class="card-title">Out of Stock</h5>
+            <p class="card-text display-6">3</p>
+            <small>Critical items</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-white bg-success">
+          <div class="card-body">
+            <h5 class="card-title">Total Value</h5>
+                            <p class="card-text display-6">UGX 475,000,000</p>
+            <small>Inventory worth</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label for="searchProduct" class="form-label">Search Product</label>
+            <input type="text" class="form-control" id="searchProduct" placeholder="Enter product name">
+          </div>
+          <div class="col-md-3">
+            <label for="filterType" class="form-label">Product Type</label>
+            <select class="form-select" id="filterType">
+              <option value="">All Types</option>
+              <option value="wood">Wood</option>
+              <option value="furniture">Furniture</option>
+              <option value="poles">Poles</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="filterStock" class="form-label">Stock Level</label>
+            <select class="form-select" id="filterStock">
+              <option value="">All Levels</option>
+              <option value="low">Low Stock</option>
+              <option value="out">Out of Stock</option>
+              <option value="normal">Normal</option>
+            </select>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <button class="btn btn-primary w-100" onclick="filterInventory()">Filter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inventory Table -->
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">Inventory Details</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>Product Name</th>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Value</th>
+                <th>Supplier</th>
+                <th>Last Updated</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Timber</td>
+                <td>Wood</td>
+                <td>125</td>
+                <td>UGX 950,000</td>
+                <td>UGX 118,750,000</td>
+                <td>ABC Supplier</td>
+                <td>2024-01-15</td>
+                <td><span class="badge bg-success">Normal</span></td>
+                <td>
+                  <button class="btn btn-sm btn-primary" onclick="editStock('timber')">Edit</button>
+                  <button class="btn btn-sm btn-info" onclick="viewHistory('timber')">History</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Sofa Set</td>
+                <td>Furniture</td>
+                <td>5</td>
+                <td>UGX 4,560,000</td>
+                <td>UGX 22,800,000</td>
+                <td>Furniture Co.</td>
+                <td>2024-01-15</td>
+                <td><span class="badge bg-warning">Low Stock</span></td>
+                <td>
+                  <button class="btn btn-sm btn-primary" onclick="editStock('sofa')">Edit</button>
+                  <button class="btn btn-sm btn-info" onclick="viewHistory('sofa')">History</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Wood Poles</td>
+                <td>Poles</td>
+                <td>0</td>
+                <td>UGX 361,000</td>
+                <td>UGX 0</td>
+                <td>XYZ Timber</td>
+                <td>2024-01-14</td>
+                <td><span class="badge bg-danger">Out of Stock</span></td>
+                <td>
+                  <button class="btn btn-sm btn-primary" onclick="editStock('poles')">Edit</button>
+                  <button class="btn btn-sm btn-info" onclick="viewHistory('poles')">History</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Dining Table</td>
+                <td>Furniture</td>
+                <td>15</td>
+                <td>UGX 3,040,000</td>
+                <td>UGX 45,600,000</td>
+                <td>Furniture Co.</td>
+                <td>2024-01-15</td>
+                <td><span class="badge bg-success">Normal</span></td>
+                <td>
+                  <button class="btn btn-sm btn-primary" onclick="editStock('dining')">Edit</button>
+                  <button class="btn btn-sm btn-info" onclick="viewHistory('dining')">History</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Pine Wood</td>
+                <td>Wood</td>
+                <td>8</td>
+                <td>UGX 684,000</td>
+                <td>UGX 5,472,000</td>
+                <td>ABC Supplier</td>
+                <td>2024-01-15</td>
+                <td><span class="badge bg-warning">Low Stock</span></td>
+                <td>
+                  <button class="btn btn-sm btn-primary" onclick="editStock('pine')">Edit</button>
+                  <button class="btn btn-sm btn-info" onclick="viewHistory('pine')">History</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function filterInventory() {
+      // Filter functionality would be implemented here
+      alert('Inventory filtered!');
+    }
+
+    function exportInventory() {
+      // Export functionality would be implemented here
+      alert('Inventory data exported!');
+    }
+
+    function printInventory() {
+      window.print();
+    }
+
+    function editStock(productId) {
+      // Redirect to stock update page with product ID
+      window.location.href = `stock-update.html?product=${productId}`;
+    }
+
+    function viewHistory(productId) {
+      alert(`Viewing history for ${productId}`);
+    }
+  </script>
+</body>
+</html> 
