@@ -5,226 +5,408 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MWF Warehouse Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
   <link rel="stylesheet" href="css/mwf.css">
+  <style>
+    .sidebar {
+      width: 280px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      background: linear-gradient(180deg, #0dcaf0 0%, #0dcaf0 100%);
+      color: white;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+    
+    .main-content {
+      margin-left: 280px;
+      min-height: 100vh;
+      background: #f8f9fa;
+    }
+    
+    .profile-section {
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #fff, #e9ecef);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      font-size: 2.5rem;
+      color: #0dcaf0;
+    }
+    
+    .user-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .user-role {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-bottom: 0.5rem;
+    }
+    
+    .user-status {
+      display: inline-block;
+      background: rgba(40, 167, 69, 0.8);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+    
+    .sidebar-nav {
+      padding: 1rem 0;
+    }
+    
+    .nav-item {
+      margin-bottom: 0.5rem;
+    }
+    
+    .nav-link {
+      color: rgba(255, 255, 255, 0.8);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+    }
+    
+    .nav-link:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      border-left-color: white;
+    }
+    
+    .nav-link.active {
+      color: white;
+      background: rgba(255, 255, 255, 0.2);
+      border-left-color: white;
+    }
+    
+    .nav-link i {
+      margin-right: 0.75rem;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .sidebar-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+    
+    .logout-btn {
+      background: rgba(220, 53, 69, 0.8);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+    
+    .logout-btn:hover {
+      background: rgba(220, 53, 69, 1);
+    }
+    
+    .top-navbar {
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 1rem 2rem;
+    }
+    
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #0dcaf0;
+    }
+    
+    .content-area {
+      padding: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      
+      .sidebar.show {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .mobile-toggle {
+        display: block;
+      }
+    }
+    
+    .mobile-toggle {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <!-- Navigation Bar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-warning">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">MWF Warehouse</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Profile Section -->
+    <div class="profile-section">
+      <div class="profile-pic">
+        <i class="bi bi-person-fill"></i>
+      </div>
+      <div class="user-name">Mike Warehouse</div>
+      <div class="user-role">Warehouse Staff</div>
+      <div class="user-status">Online</div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <div class="sidebar-nav">
+      <div class="nav-item">
+        <a href="warehouse-dashboard.html" class="nav-link active">
+          <i class="bi bi-speedometer2"></i>
+          Dashboard
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="inventory.html" class="nav-link">
+          <i class="bi bi-box"></i>
+          Current Inventory
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="delivery-logs.html" class="nav-link">
+          <i class="bi bi-truck"></i>
+          Delivery Logs
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="stock-update.html" class="nav-link">
+          <i class="bi bi-plus-circle"></i>
+          Update Stock
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="suppliers.html" class="nav-link">
+          <i class="bi bi-building"></i>
+          Suppliers
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="reports.html" class="nav-link">
+          <i class="bi bi-file-earmark-text"></i>
+          Stock Reports
+        </a>
+      </div>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="window.location.href='index.html'">
+        <i class="bi bi-box-arrow-right"></i> Logout
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link active" href="warehouse-dashboard.html">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="inventory.html">Current Inventory</a></li>
-          <li class="nav-item"><a class="nav-link" href="delivery-logs.html">Delivery Logs</a></li>
-          <li class="nav-item"><a class="nav-link" href="stock-update.html">Update Stock</a></li>
-          <li class="nav-item"><a class="nav-link" href="suppliers.html">Suppliers</a></li>
-          <li class="nav-item"><a class="nav-link" href="index.html">Logout</a></li>
-        </ul>
-      </div>
     </div>
-  </nav>
+  </div>
 
-  <div class="container mt-4">
-    <h2 class="mb-4">Warehouse Dashboard</h2>
-    
-    <!-- Quick Summary Cards -->
-    <div class="row g-4 mb-4">
-      <div class="col-md-3">
-        <div class="card text-white bg-info">
-          <div class="card-body">
-            <h5 class="card-title">Total Inventory</h5>
-            <p class="card-text display-6">1,250</p>
-            <small>Items in stock</small>
-          </div>
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Top Navbar -->
+    <div class="top-navbar">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <button class="btn btn-outline-info mobile-toggle" onclick="toggleSidebar()">
+            <i class="bi bi-list"></i>
+          </button>
+          <span class="page-title ms-3">Warehouse Dashboard</span>
         </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-warning">
-          <div class="card-body">
-            <h5 class="card-title">Low Stock</h5>
-            <p class="card-text display-6">8</p>
-            <small>Items need restocking</small>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-success">
-          <div class="card-body">
-            <h5 class="card-title">Today's Deliveries</h5>
-            <p class="card-text display-6">12</p>
-            <small>Items received</small>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-primary">
-          <div class="card-body">
-            <h5 class="card-title">Outgoing</h5>
-            <p class="card-text display-6">45</p>
-            <small>Items shipped today</small>
+        <div class="d-flex align-items-center">
+          <span class="text-muted me-3">Welcome back, Mike!</span>
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <i class="bi bi-bell"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">New delivery arrived</a></li>
+              <li><a class="dropdown-item" href="#">Low stock alert</a></li>
+              <li><a class="dropdown-item" href="#">Inventory count due</a></li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Main Actions -->
-    <div class="row g-4 mb-4">
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="mb-0">Warehouse Operations</h5>
+    <!-- Content Area -->
+    <div class="content-area">
+      <!-- Quick Summary Cards -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-3">
+          <div class="card text-white bg-info">
+            <div class="card-body">
+              <h5 class="card-title">Total Inventory</h5>
+              <p class="card-text display-6">1,250</p>
+              <small>Items in stock</small>
+            </div>
           </div>
-          <div class="card-body">
-            <div class="row g-3">
-              <div class="col-md-6">
-                <button class="btn btn-info btn-lg w-100" onclick="window.location.href='inventory.html'">
-                  <i class="bi bi-box"></i><br>
-                  View Current Inventory
-                </button>
-              </div>
-              <div class="col-md-6">
-                <button class="btn btn-warning btn-lg w-100" onclick="window.location.href='delivery-logs.html'">
-                  <i class="bi bi-truck"></i><br>
-                  Update Delivery Logs
-                </button>
-              </div>
-              <div class="col-md-6">
-                <button class="btn btn-success btn-lg w-100" onclick="window.location.href='stock-update.html'">
-                  <i class="bi bi-plus-circle"></i><br>
-                  Update Stock Levels
-                </button>
-              </div>
-              <div class="col-md-6">
-                <button class="btn btn-primary btn-lg w-100" onclick="window.location.href='suppliers.html'">
-                  <i class="bi bi-building"></i><br>
-                  Manage Suppliers
-                </button>
-              </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-white bg-warning">
+            <div class="card-body">
+              <h5 class="card-title">Low Stock</h5>
+              <p class="card-text display-6">8</p>
+              <small>Items need restocking</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-white bg-success">
+            <div class="card-body">
+              <h5 class="card-title">Today's Deliveries</h5>
+              <p class="card-text display-6">12</p>
+              <small>Items received</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h5 class="card-title">Outgoing</h5>
+              <p class="card-text display-6">45</p>
+              <small>Items shipped today</small>
             </div>
           </div>
         </div>
       </div>
-      
-      <!-- Low Stock Alerts -->
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="mb-0">Low Stock Alerts</h5>
-          </div>
-          <div class="card-body">
-            <div class="list-group list-group-flush">
-              <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="mb-1">Timber</h6>
-                  <small>5 units remaining</small>
-                </div>
-                <span class="badge bg-danger">Critical</span>
-              </div>
-              <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="mb-1">Sofa Sets</h6>
-                  <small>2 units remaining</small>
-                </div>
-                <span class="badge bg-warning">Low</span>
-              </div>
-              <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="mb-1">Wood Poles</h6>
-                  <small>8 units remaining</small>
-                </div>
-                <span class="badge bg-warning">Low</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Recent Activity -->
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="mb-0">Recent Deliveries</h5>
+      <!-- Main Actions -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Warehouse Operations</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <button class="btn btn-info btn-lg w-100" onclick="window.location.href='inventory.html'">
+                    <i class="bi bi-box"></i><br>
+                    View Current Inventory
+                  </button>
+                </div>
+                <div class="col-md-6">
+                  <button class="btn btn-warning btn-lg w-100" onclick="window.location.href='delivery-logs.html'">
+                    <i class="bi bi-truck"></i><br>
+                    Update Delivery Logs
+                  </button>
+                </div>
+                <div class="col-md-6">
+                  <button class="btn btn-success btn-lg w-100" onclick="window.location.href='stock-update.html'">
+                    <i class="bi bi-plus-circle"></i><br>
+                    Update Stock Levels
+                  </button>
+                </div>
+                <div class="col-md-6">
+                  <button class="btn btn-primary btn-lg w-100" onclick="window.location.href='suppliers.html'">
+                    <i class="bi bi-building"></i><br>
+                    Manage Suppliers
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Time</th>
-                    <th>Supplier</th>
-                    <th>Items</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>10:30 AM</td>
-                    <td>ABC Supplier</td>
-                    <td>50 units</td>
-                    <td><span class="badge bg-success">Received</span></td>
-                  </tr>
-                  <tr>
-                    <td>09:15 AM</td>
-                    <td>XYZ Timber</td>
-                    <td>100 units</td>
-                    <td><span class="badge bg-success">Received</span></td>
-                  </tr>
-                  <tr>
-                    <td>08:45 AM</td>
-                    <td>Furniture Co.</td>
-                    <td>25 units</td>
-                    <td><span class="badge bg-warning">Processing</span></td>
-                  </tr>
-                </tbody>
-              </table>
+        </div>
+        
+        <!-- Low Stock Alerts -->
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Low Stock Alerts</h5>
+            </div>
+            <div class="card-body">
+              <div class="list-group list-group-flush">
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="mb-1">Timber</h6>
+                    <small>Only 5 units left</small>
+                  </div>
+                  <span class="badge bg-danger">Critical</span>
+                </div>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="mb-1">Sofa Sets</h6>
+                    <small>Only 2 units left</small>
+                  </div>
+                  <span class="badge bg-warning">Low</span>
+                </div>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="mb-1">Wood Poles</h6>
+                    <small>Only 8 units left</small>
+                  </div>
+                  <span class="badge bg-warning">Low</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="mb-0">Stock Movements</h5>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Item</th>
-                    <th>In</th>
-                    <th>Out</th>
-                    <th>Balance</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Timber</td>
-                    <td class="text-success">+50</td>
-                    <td class="text-danger">-25</td>
-                    <td>125</td>
-                  </tr>
-                  <tr>
-                    <td>Furniture</td>
-                    <td class="text-success">+25</td>
-                    <td class="text-danger">-10</td>
-                    <td>40</td>
-                  </tr>
-                  <tr>
-                    <td>Wood Poles</td>
-                    <td class="text-success">+100</td>
-                    <td class="text-danger">-15</td>
-                    <td>85</td>
-                  </tr>
-                </tbody>
-              </table>
+
+      <!-- Recent Activity -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Recent Warehouse Activity</h5>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Activity</th>
+                      <th>User</th>
+                      <th>Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>10:30 AM</td>
+                      <td>Stock Received</td>
+                      <td>Mike</td>
+                      <td>50 units of timber from ABC Suppliers</td>
+                    </tr>
+                    <tr>
+                      <td>09:15 AM</td>
+                      <td>Delivery Out</td>
+                      <td>Mike</td>
+                      <td>Furniture set shipped to customer</td>
+                    </tr>
+                    <tr>
+                      <td>08:45 AM</td>
+                      <td>Stock Count</td>
+                      <td>Mike</td>
+                      <td>Inventory count completed</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -233,5 +415,11 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      sidebar.classList.toggle('show');
+    }
+  </script>
 </body>
 </html> 
